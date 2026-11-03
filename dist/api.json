@@ -1,0 +1,155 @@
+{
+  "package": "@arki/content-build",
+  "version": "0.2.0",
+  "entries": [
+    {
+      "subpath": "./config",
+      "name": "addIdToHeadings",
+      "kind": "variable",
+      "signature": "export declare const addIdToHeadings: unified.Pluggable;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "CompiledMarkdown",
+      "kind": "type",
+      "signature": "export type CompiledMarkdown = { html: string; headings: MarkdownHeading[]; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "compileMarkdown",
+      "kind": "function",
+      "signature": "export declare function compileMarkdown(markdown: string, options?: CompileMarkdownOptions): Promise<CompiledMarkdown>;",
+      "jsdocSummary": "Compiles plain GitHub-flavoured markdown (not MDX: `<` and `{` in prose stay text) to HTML with this package's own plugins: GFM, GitHub-style heading ids, autolinked headings and code blocks highlighted by `rehype-pretty-code` (light and dark themes as `--shiki-light` / `--shiki-dark` CSS variables). Raw HTML in the markdown is sanitized (GitHub's rules: no `<script>`, no event handlers, no `javascript:` links) unless `trustedHtml` is set."
+    },
+    {
+      "subpath": "./config",
+      "name": "CompileMarkdownOptions",
+      "kind": "type",
+      "signature": "export type CompileMarkdownOptions = { /** * Called with the `href` of every link. Return a new `href`, `null` to drop the link and keep its text, or * `undefined` to keep the link as written. */ rewriteLink?: (href: string) => string | null | undefined; /** * Keep raw HTML in the markdown exactly as written (scripts, event handlers and all). Default `false`: raw HTML is * parsed and then cleaned with `rehype-sanitize`'s GitHub-style rules, so a hostile document cannot inject script. * Set it only for markdown your own team wrote. */ trustedHtml?: boolean; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "compileMDX",
+      "kind": "function",
+      "signature": "export declare function compileMDX(context: Pick<CollectionContext, 'cache' | 'collection'>, document: MdxDocument, options?: MdxOptions): Promise<string>;",
+      "jsdocSummary": "`compileMDX` from `@content-collections/mdx`, with a cache key that changes when images, components or options do."
+    },
+    {
+      "subpath": "./config",
+      "name": "defineCollection",
+      "kind": "function",
+      "signature": "declare function defineCollection<TName extends string, TShape extends TSchemaProp, TParser extends ConfiguredParser = \"frontmatter\", TSchema$1 = Schema<TParser, TShape>, TTransformResult = never, TDocument$1 = ([TTransformResult] extends [never] ? Schema<TParser, TShape> : Exclude<Awaited<TTransformResult>, SkippedSignal>), TResult = (TDocument$1 extends Serializable ? Collection<TName, TShape, TParser, TSchema$1, TTransformResult, ResolveImports<TDocument$1>> : InvalidReturnType<NotSerializableError, TDocument$1>)>(collection: CollectionRequest<TName, TShape, TParser, TSchema$1, TTransformResult, TDocument$1>): TResult;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "defineContentConfig",
+      "kind": "function",
+      "signature": "export declare function defineContentConfig<TCollections extends AnyContent[]>(config: { content: TCollections; }): ConfigurationWithContent<TCollections>;",
+      "jsdocSummary": "The app's content config: its collections, plus the hooks that keep generated files stable and self-contained."
+    },
+    {
+      "subpath": "./config",
+      "name": "GetTypeByName",
+      "kind": "type",
+      "signature": "type GetTypeByName<TConfiguration extends AnyConfiguration, TName extends keyof CollectionByName<TConfiguration>, TCollection$1 = CollectionByName<TConfiguration>[TName]> = TCollection$1 extends AnyContent ? GetDocument<TCollection$1> : never;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "MarkdownHeading",
+      "kind": "type",
+      "signature": "export type MarkdownHeading = { depth: number; text: string; id: string; };",
+      "jsdocSummary": "One heading of the page, in document order: what an on-page table of contents lists."
+    },
+    {
+      "subpath": "./config",
+      "name": "Meta",
+      "kind": "type",
+      "signature": "type Meta = { filePath: string; fileName: string; directory: string; path: string; extension: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./config",
+      "name": "resolveImageBlurDataURL",
+      "kind": "variable",
+      "signature": "declare const resolveImageBlurDataURL: (sourceRoot: string, directory: string, image: string, limits?: RemoteImageLimits) => Promise<string>;",
+      "jsdocSummary": "A local image is keyed by its bytes, so two posts with a `cover.jpg` get their own placeholder and a replaced image gets a new one. A remote image is keyed by its URL, so the build does not download it again."
+    },
+    {
+      "subpath": "./presets",
+      "name": "Changelog",
+      "kind": "type",
+      "signature": "export type Changelog = GetTypeByName<{ content: [typeof changelogs]; }, 'Changelogs'>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "changelogs",
+      "kind": "variable",
+      "signature": "export declare const changelogs: import(\"@content-collections/core\").Collection<\"Changelogs\", z.ZodObject<{ title: z.ZodString; description: z.ZodString; image: z.ZodString; publishedAt: z.ZodCoercedDate<unknown>; content: z.ZodString; }, z.core.$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", z.ZodObject<{ title: z.ZodString; description: z.ZodString; image: z.ZodString; publishedAt: z.ZodCoercedDate<unknown>; content: z.ZodString; }, z.core.$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; description: string; publishedAt: Date; content: { mdx: string; raw: string; }; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; description: string; publishedAt: Date; content: { mdx: string; raw: string; }; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "Faq",
+      "kind": "type",
+      "signature": "export type Faq = GetTypeByName<{ content: [typeof faqs]; }, 'FAQs'>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "faqs",
+      "kind": "variable",
+      "signature": "export declare const faqs: import(\"@content-collections/core\").Collection<\"FAQs\", z.ZodObject<{ title: z.ZodString; order: z.ZodNumber; content: z.ZodString; }, z.core.$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", z.ZodObject<{ title: z.ZodString; order: z.ZodNumber; content: z.ZodString; }, z.core.$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; order: number; content: string; mdx: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; order: number; content: string; mdx: string; slug: string; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "Legal",
+      "kind": "type",
+      "signature": "export type Legal = GetTypeByName<{ content: [typeof legals]; }, 'Legals'>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "legals",
+      "kind": "variable",
+      "signature": "export declare const legals: import(\"@content-collections/core\").Collection<\"Legals\", z.ZodObject<{ title: z.ZodString; updatedAt: z.ZodString; content: z.ZodString; }, z.core.$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", z.ZodObject<{ title: z.ZodString; updatedAt: z.ZodString; content: z.ZodString; }, z.core.$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; updatedAt: string; content: string; mdx: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; updatedAt: string; content: string; mdx: string; slug: string; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "marketing",
+      "kind": "variable",
+      "signature": "export declare const marketing: import(\"@content-collections/core\").ConfigurationWithContent<(import(\"@content-collections/core\").Collection<\"Changelogs\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; description: import(\"zod\").ZodString; image: import(\"zod\").ZodString; publishedAt: import(\"zod\").ZodCoercedDate<unknown>; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; description: import(\"zod\").ZodString; image: import(\"zod\").ZodString; publishedAt: import(\"zod\").ZodCoercedDate<unknown>; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; description: string; publishedAt: Date; content: { mdx: string; raw: string; }; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; description: string; publishedAt: Date; content: { mdx: string; raw: string; }; image: { url: string; blurDataURL: string; }; url: string; slug: string; }> | import(\"@content-collections/core\").Collection<\"FAQs\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; order: import(\"zod\").ZodNumber; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; order: import(\"zod\").ZodNumber; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; order: number; content: string; mdx: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; order: number; content: string; mdx: string; slug: string; }> | import(\"@content-collections/core\").Collection<\"Legals\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; updatedAt: import(\"zod\").ZodString; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; updatedAt: import(\"zod\").ZodString; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; updatedAt: string; content: string; mdx: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; updatedAt: string; content: string; mdx: string; slug: string; }> | import(\"@content-collections/core\").Collection<\"posts\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; description: import(\"zod\").ZodString; image: import(\"zod\").ZodString; publishedAt: import(\"zod\").ZodCoercedDate<unknown>; author: import(\"zod\").ZodObject<{ name: import(\"zod\").ZodString; url: import(\"zod\").ZodOptional<import(\"zod\").ZodString>; avatar: import(\"zod\").ZodOptional<import(\"zod\").ZodString>; }, import(\"zod/v4/core\").$strip>; tags: import(\"zod\").ZodArray<import(\"zod\").ZodString>; lastModification: import(\"zod\").ZodOptional<import(\"zod\").ZodCoercedDate<unknown>>; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", import(\"zod\").ZodObject<{ title: import(\"zod\").ZodString; description: import(\"zod\").ZodString; image: import(\"zod\").ZodString; publishedAt: import(\"zod\").ZodCoercedDate<unknown>; author: import(\"zod\").ZodObject<{ name: import(\"zod\").ZodString; url: import(\"zod\").ZodOptional<import(\"zod\").ZodString>; avatar: import(\"zod\").ZodOptional<import(\"zod\").ZodString>; }, import(\"zod/v4/core\").$strip>; tags: import(\"zod\").ZodArray<import(\"zod\").ZodString>; lastModification: import(\"zod\").ZodOptional<import(\"zod\").ZodCoercedDate<unknown>>; content: import(\"zod\").ZodString; }, import(\"zod/v4/core\").$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; description: string; publishedAt: Date; author: { name: string; url?: string | undefined; avatar?: string | undefined; }; tags: string[]; content: { mdx: string; raw: string; }; readingTime: string; lastModification: string | undefined; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; description: string; publishedAt: Date; author: { name: string; url?: string | undefined; avatar?: string | undefined; }; tags: string[]; content: { mdx: string; raw: string; }; readingTime: string; lastModification: string | undefined; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>)[]>;",
+      "jsdocSummary": "A marketing site's content: blog posts, legal pages, FAQs and changelog entries."
+    },
+    {
+      "subpath": "./presets",
+      "name": "Post",
+      "kind": "type",
+      "signature": "export type Post = GetTypeByName<{ content: [typeof posts]; }, 'posts'>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./presets",
+      "name": "posts",
+      "kind": "variable",
+      "signature": "export declare const posts: import(\"@content-collections/core\").Collection<\"posts\", z.ZodObject<{ title: z.ZodString; description: z.ZodString; image: z.ZodString; publishedAt: z.ZodCoercedDate<unknown>; author: z.ZodObject<{ name: z.ZodString; url: z.ZodOptional<z.ZodString>; avatar: z.ZodOptional<z.ZodString>; }, z.core.$strip>; tags: z.ZodArray<z.ZodString>; lastModification: z.ZodOptional<z.ZodCoercedDate<unknown>>; content: z.ZodString; }, z.core.$strip>, \"frontmatter\", import(\"@content-collections/core\").Schema<\"frontmatter\", z.ZodObject<{ title: z.ZodString; description: z.ZodString; image: z.ZodString; publishedAt: z.ZodCoercedDate<unknown>; author: z.ZodObject<{ name: z.ZodString; url: z.ZodOptional<z.ZodString>; avatar: z.ZodOptional<z.ZodString>; }, z.core.$strip>; tags: z.ZodArray<z.ZodString>; lastModification: z.ZodOptional<z.ZodCoercedDate<unknown>>; content: z.ZodString; }, z.core.$strip>>, Promise<{ _meta: import(\"@content-collections/core\").Meta; title: string; description: string; publishedAt: Date; author: { name: string; url?: string | undefined; avatar?: string | undefined; }; tags: string[]; content: { mdx: string; raw: string; }; readingTime: string; lastModification: string | undefined; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>, { _meta: { filePath: string; fileName: string; directory: string; path: string; extension: string; }; title: string; description: string; publishedAt: Date; author: { name: string; url?: string | undefined; avatar?: string | undefined; }; tags: string[]; content: { mdx: string; raw: string; }; readingTime: string; lastModification: string | undefined; image: { url: string; blurDataURL: string; }; url: string; slug: string; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./vite",
+      "name": "contentPlugin",
+      "kind": "function",
+      "signature": "export declare function contentPlugin(): Plugin;",
+      "jsdocSummary": "Builds the app's `content.config.ts` into `.content-collections/generated` (imported as `content-collections`). `vite build` builds once and fails on any broken content file; `vite dev` rebuilds on change and only reports."
+    }
+  ],
+  "groups": [],
+  "errorCodes": []
+}

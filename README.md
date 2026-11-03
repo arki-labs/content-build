@@ -1,0 +1,22 @@
+Read-only mirror of `@arki/content-build` v0.2.0. Source and issues: arki-labs/arki. Docs: https://arki.dev/packages/content-build. Published 2026-11-03 with provenance https://www.npmjs.com/package/@arki/content-build/v/0.2.0#provenance.
+
+# @arki/content-build
+
+Build-time content pipeline for our apps: content-collections config, preset collections (posts, legal pages, FAQs, changelog) and the `arki-content` CLI.
+
+## Compiling plain markdown
+
+`compileMarkdown` compiles GitHub-flavoured markdown to HTML. Use it for markdown written for GitHub, such as package READMEs and docs. MDX would fail on `<` and `{` in prose; plain markdown keeps them as text.
+
+```ts skip="fragment: document comes from a content-collections transform"
+import { compileMarkdown } from '@arki/content-build/config';
+
+const { html, headings } = await compileMarkdown(document.content, {
+  rewriteLink: href => (href.startsWith('./') ? `/docs/${href.slice(2).replace(/\.md$/, '')}` : undefined),
+});
+```
+
+- `html`: the compiled page. Tables and task lists are kept. Raw HTML is sanitized with GitHub's rules (no `<script>`, no event handlers, no `javascript:` links). Pass `trustedHtml: true` to keep raw HTML as written, for markdown your own team wrote.
+- `headings`: `{ depth, text, id }` for every heading, in order. Ids match GitHub's, so `#anchor` links keep working.
+- Code blocks are highlighted by `rehype-pretty-code` with light and dark themes. Each token carries `--shiki-light` and `--shiki-dark` CSS variables; the app's CSS picks one.
+- `rewriteLink(href)` runs on every link: return a new `href`, `null` to drop the link and keep its text, or `undefined` to keep it.
