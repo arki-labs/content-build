@@ -1,4 +1,6 @@
 import { z } from '@arki/contracts';
+/** @internal The reading time of a post, inline `<svg>…</svg>` blocks left out. */
+export declare function calculateReadingTime(content: string): string;
 export declare const posts: import("@content-collections/core").Collection<"posts", z.ZodObject<{
     title: z.ZodString;
     description: z.ZodString;
